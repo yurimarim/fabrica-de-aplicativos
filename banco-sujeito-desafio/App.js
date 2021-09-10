@@ -1,19 +1,23 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import Slider from '@react-native-community/slider'
+
+import BancoSujeitoHeader from './src/components/BancoSujeitoHeader'
+import TextInputComponent from './src/components/TextInput'
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <BancoSujeitoHeader />
+      <TextInputComponent placeholder="Digite seu nome" />
+
+      <Slider></Slider>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
+    flex: 1
   }
 })
