@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, Text, TouchableOpacity, Switch } from 'react-native'
 import Slider from '@react-native-community/slider'
 import { Picker } from '@react-native-picker/picker'
 
@@ -9,6 +9,7 @@ import TextInputComponent from './src/components/TextInput'
 export default function App() {
   const [gender, setGender] = useState(0)
   const [valueSlider, setValueSlider] = useState(450)
+  const [isStudent, setIsStudent] = useState(false) // booleans
   return (
     <View style={styles.container}>
       <BancoSujeitoHeader />
@@ -22,22 +23,41 @@ export default function App() {
         onValueChange={(itemValue, itemIndex) => setGender(itemValue)}
       >
         <Picker.Item key={0} value={0} label="Sexo" />
-        <Picker.Item key={0} value={0} label="Masculino" />
-        <Picker.Item key={0} value={0} label="Feminino" />
+        <Picker.Item key={1} value={1} label="Masculino" />
+        <Picker.Item key={2} value={2} label="Feminino" />
       </Picker>
 
-      <Text>Inserir seu limite</Text>
+      <View style={styles.containerLimit}>
+        <Text style={styles.textLimit}>Inserir seu limite</Text>
+      </View>
       <Slider
         minimumValue={50}
         maximumValue={1000}
         value={valueSlider}
         onValueChange={valueSelected => setValueSlider(valueSelected)}
+        minimumTrackTintColor="#fff"
+        maximumTrackTintColor="#dddeee"
       />
-      <Text>{`R$  ${valueSlider}`}</Text>
+      <View style={styles.containerLimit}>
+        <Text style={styles.textLimit}>{`R$  ${valueSlider.toFixed(0)}`}</Text>
+      </View>
 
-      <TouchableOpacity style={styles.signUpBtn}>
-        <Text style={styles.signUpBtnText}>Abrir Conta</Text>
-      </TouchableOpacity>
+      <View style={styles.isStudentView}>
+        <Text style={[styles.textName, styles.containerAlignItems]}>
+          Você é um estudante?
+        </Text>
+        <Switch
+          value={isStudent}
+          onValueChange={valueSelected => setIsStudent(valueSelected)}
+          trackColor={{ false: '#1C8DC7', true: '#1CC3C7' }}
+          thumbColor="#fff"
+        />
+      </View>
+      <View style={styles.containerSignUpBtn}>
+        <TouchableOpacity style={styles.signUpBtn}>
+          <Text style={styles.signUpBtnText}>Abrir Conta</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }
@@ -47,11 +67,34 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#2438BA'
   },
+  containerLimit: {
+    display: 'flex',
+    alignItems: 'center',
+    margin: 15
+  },
+  containerSignUpBtn: {
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: 90
+  },
+  isStudentView: {
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: 20
+  },
+  containerAlignItems: {
+    marginBottom: 10
+  },
   textName: {
     fontSize: 18,
     fontWeight: 'bold',
     color: '#fff',
     marginLeft: 15
+  },
+  textLimit: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff'
   },
   picker: {
     color: '#fff',
