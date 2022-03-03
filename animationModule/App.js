@@ -3,8 +3,8 @@ import { StyleSheet, Text, View, Animated } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 
 export default function App() {
-  const widAnimated = useRef(new Animated.Value(150)).current
-  const heiAnimated = useRef(new Animated.Value(50)).current
+  const widAnimated = useRef(new Animated.Value(0)).current
+  const heiAnimated = useRef(new Animated.Value(0)).current
   const bordAnimated = useRef(new Animated.Value(0)).current
   // const opacityAnimated = useRef(new Animated.Value(0)).current
   const textAnimated = useRef(new Animated.Value(22)).current
@@ -94,40 +94,64 @@ export default function App() {
     //   })
     // ]).start()
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(widAnimated, {
-          toValue: 300,
-          duration: 2000,
-          useNativeDriver: false
-        }),
-        Animated.timing(widAnimated, {
-          toValue: 150,
-          duration: 2000,
-          useNativeDriver: false
-        })
-      ])
-    ).start()
+    // Animated.loop(
+    //   Animated.sequence([
+    //     Animated.timing(widAnimated, {
+    //       toValue: 300,
+    //       duration: 2000,
+    //       useNativeDriver: false
+    //     }),
+    //     Animated.timing(widAnimated, {
+    //       toValue: 150,
+    //       duration: 2000,
+    //       useNativeDriver: false
+    //     })
+    //   ])
+    // ).start()
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Animated.sequence([
+      Animated.timing(widAnimated, {
+        toValue: 100,
+        duration: 2000,
+        useNativeDriver: false
+      }),
+      Animated.timing(heiAnimated, {
+        toValue: 100,
+        duration: 3000,
+        useNativeDriver: false
+      })
+    ]).start()
   }, [])
+
+  let porcentWidth = widAnimated.interpolate({
+    inputRange: [50, 100],
+    outputRange: ['5%', '100%']
+  })
+
+  let porcentHeight = heiAnimated.interpolate({
+    inputRange: [0, 100],
+    outputRange: ['0%', '100%']
+  })
 
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
       <Animated.View
         style={{
-          width: widAnimated,
-          height: heiAnimated,
-          borderRadius: bordAnimated,
+          width: porcentWidth,
+          height: porcentHeight,
+          // borderRadius: bordAnimated,
           backgroundColor: '#4169e1',
           justifyContent: 'center'
           // opacity: opacityAnimated,
         }}
       >
-        <Animated.Text
+        {/* <Animated.Text
           style={{ textAlign: 'center', fontSize: textAnimated, color: '#fff' }}
         >
           Carregando...
-        </Animated.Text>
+        </Animated.Text> */}
       </Animated.View>
     </View>
   )
