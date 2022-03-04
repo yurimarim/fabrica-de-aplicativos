@@ -5,30 +5,30 @@ import firebase from './src/services/firebaseConnection'
 export default function App() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [user, setUser] = useState('')
 
-  async function register() {
+  async function login() {
     await firebase
       .auth()
-      .createUserWithEmailAndPassword(email, password)
+      // .createUserWithEmailAndPassword(email, password)
+      .signInWithEmailAndPassword(email, password)
       .then(value => {
-        alert(`Usuário criado: ${value.user.email}`)
+        alert(`Bem-vindo: ${value.user.email}`)
+        setUser(value.user.email)
       })
       .catch(error => {
-        if (error.code === 'auth/weak-password') {
-          alert('Sua senha deve ter pelo menos 6 caracteres')
-          return
-        }
-        if (error.code === 'auth/invalid-email') {
-          alert('E-mail inválido!')
-          return
-        } else {
-          alert('Ops... algo deu errado! :(')
-          return
-        }
+        alert('Ops... algo deu errado! :(')
+        return
       })
 
     setEmail('')
     setPassword('')
+  }
+
+  async function logout() {
+    await firebase.auth().signOut()
+    setUser('')
+    alert('Deslogado com Sucesso!')
   }
 
   return (
@@ -49,7 +49,32 @@ export default function App() {
         underlineColorAndroid="transparent"
       />
 
-      <Button title="Cadastrar" onPress={register} />
+      <Button title="Acessar" onPress={login} />
+      <Text
+        style={{
+          marginTop: 20,
+          marginBottom: 20,
+          fontSize: 23,
+          textAlign: 'center'
+        }}
+      >
+        {user}
+      </Text>
+
+      {user.length > 0 ? (
+        <Button title="Logout" onPress={logout} />
+      ) : (
+        <Text
+          style={{
+            marginTop: 20,
+            marginBottom: 20,
+            fontSize: 23,
+            textAlign: 'center'
+          }}
+        >
+          Nenhum usuário está logado!
+        </Text>
+      )}
     </View>
   )
 }
